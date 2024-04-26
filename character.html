@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+
+        <script src="prism.js" defer></script>
+        <link rel="stylesheet" href="prism.css" />
+        <title>Character | pygameTimestep Docs</title>
+    </head>
+    <body>
+        <aside>
+            <h1>pygameTimestep Docs</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="#">Character</a>
+                <a href="timestep.html">Timestep</a>
+            </nav>
+        </aside>
+        <main>
+            <h2><code class="language-python">timestep.Character</code></h2>
+            <p>Base class for any moving objects in the game.</p>
+            <code class="language-python">Character(x_pos, y_pos, image, rect) -> Character</code>
+            <ul>
+                <li>
+                    <a href="#update">timestep.Character.update</a>
+                    <p>Method to control Character behaviour</p>
+                </li>
+                <li>
+                    <a href="#draw">timestep.Character.draw</a>
+                    <p>Blit the Character's image</p>
+                </li>
+            </ul>
+            <p>The base class for moving game objects. Derived classes should override the <code class="language-python">Character.update()</code> method and assign a <code class="language-python">Character.image</code> before calling <code class="language-python">super().__init__(x_pos, y_pos, self.image)</code>. For example:</p>
+            <pre><code class="language-python">class Player(timestep.Character):
+    # Constructer. Pass in the Character's startomg position.
+    def __init__(self, x_pos: float, y_pos: float) -> None:
+        # Create image, fill with colour, create rect
+        # This could also be an image loaded from the disk.
+        self.image = pygame.Surface((100, 100))
+        self.image.fill("red")
+        self.rect = self.image.get_frect()
+        # Call the parent class (Character) constructer, passing in the position, image and rect.
+        super().__init__(x_pos, y_pos, self.image)</code></pre>
+            <h3 id="update">update()</h3>
+            <p>Method to control Character behaviour</p>
+            <code class="language-python">update(*args, **kwargs) -> None</code>
+            <p>This method is intended to be overriden with your own behaviour (movement, collisions etc.) for the Character. The only requirement is that you call <code class="language-python">super().update()</code> first:</p>
+            <pre><code class="language-python">    ...
+    def update(self) -> None:
+        super().update()
+        
+        # example movement
+        self.vel.y += gravity
+        self.vel.x *= self.friction
+        self.rect.x += self.vel.x</code></pre>
+            <h3 id="draw">draw()</h3>
+            <p>Blit the Character's image</p>
+            <code class="language-python">draw(surface, alpha) -> None</code>
+            <p>Draws the <code class="language-python">Character.image</code> to the screen at the Character's rect position. Should be called only within a <code class="language-python">timestep.Timestep.render()</code> method (<a href="timestep.html#render">link</a>). alpha is a float that is automatically passed in (explained in <code class="language-python">timestep.Timestep.render()</code>).</p>
+        </main>
+    </body>
+</html>

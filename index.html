@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+
+        <script src="prism.js" defer></script>
+        <link rel="stylesheet" href="prism.css" />
+        <title>pygameTimestep Docs</title>
+    </head>
+    <body>
+        <aside>
+            <h1>pygameTimestep Docs</h1>
+            <nav>
+                <a href="#">Home</a>
+                <a href="character.html">Character</a>
+                <a href="timestep.html">Timestep</a>
+            </nav>
+        </aside>
+        <main>
+            <h2>Quick Start</h2>
+            <p>Welcome to pygameTimestep! Once you have pygame-ce installed (instructions <a href="https://github.com/pygame-community/pygame-ce/releases">here</a>), and the <a href="https://github.com/AuthentiCuber/pygameTimestep/blob/master/timestep.py">timestep.py fiie</a> in your project directory, follow this template to get started:</p>
+            <pre><code class="language-python">import pygame
+import timestep
+
+pygame.init()
+
+screen = pygame.display.set_mode((1000, 600))
+pygame.display.set_caption("pygameTimestep Template")
+
+class Player(timestep.Character):
+    def __init__(self, x: int, y: int) -> None:
+        # self.image followed by super().__init__() is required
+        self.image = pygame.Surface((100, 100))
+        self.image.fill("red")
+        self.rect = self.image.get_frect()
+        super().__init__(x, y, self.image, self.rect)
+        self.vel = pygame.math.Vector2(0, 0)
+        self.gravity = 1
+
+    def update(self) -> None:
+        # required: call super().update()
+        super().update()
+
+        # Update velocity, then position
+        self.vel.y += self.gravity
+        self.rect.y += self.vel.y
+
+player = Player(500, 0)
+
+class game_loop(timestep.Timestep):
+    def update(self):
+        # Standard pygame event loop
+        global game_running
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_running = False
+
+        # Then update all Characters
+        player.update()
+
+    def render(self, alpha):
+        screen.fill((0, 0, 0))
+        # Character draw method must be passed 'alpha'
+        player.draw(screen, alpha)
+
+        pygame.display.flip()
+
+# Create game_loop object
+game = game_loop(1/60)
+
+# Call run_game() inside while loop
+game_running = True
+while game_running:
+    game.run_game()
+pygame.quit()
+</code></pre>
+        </main>
+    </body>
+</html>

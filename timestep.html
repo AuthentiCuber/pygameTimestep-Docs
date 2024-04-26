@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+
+        <script src="prism.js" defer></script>
+        <link rel="stylesheet" href="prism.css" />
+        <title>Timestep | pygameTimestep Docs</title>
+    </head>
+    <body>
+        <aside>
+            <h1>pygameTimestep Docs</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="character.html">Character</a>
+                <a href="#">Timestep</a>
+            </nav>
+        </aside>
+        <main>
+            <h2><code class="language-python">timestep.Timestep</code></h2>
+            <p>Class that handles the framerate-independent game loop.</p>
+            <code class="language-python">Timestep(step) -> Timestep</code>
+            <ul>
+                <li>
+                    <a href="#update">timestep.Timestep.update</a>
+                    <p>Run game logic</p>
+                </li>
+                <li>
+                    <a href="#render">timestep.Timestep.render</a>
+                    <p>Blit and draw all objects</p>
+                </li>
+                <li>
+                    <a href="#run_game">timestep.Timestep.run_game</a>
+                    <p>Run the game loop</p>
+                </li>
+            </ul>
+            <p>Class that runs the game loop and does all the calculations to make the game framerate independent. step is the time (in seconds) between rendering update, for example 1/60.</p>
+            <pre><code class="language-python">class game_loop(timestep.Timestep):
+    ...
+
+game = game_loop(1/60)</code></pre>
+
+            <h3 id="update">update()</h3>
+            <p>Run game logic</p>
+            <code class="language-python">update(*args, **kwargs) -> None</code>
+            <p>This method is intended to be overwriten with Character updates and the pygame event loop. Should not be called manually.</p>
+            <pre><code class="language-python">    ...
+    def update(self):
+        # standard pygame event loop
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                game_running = False
+        # update Characters
+        player.update()</code></pre>
+
+            <h3 id="render">render()</h3>
+            <p>Blit and draw all objects</p>
+            <code class="language-python">render(alpha) -> None</code>
+            <p>This method is intended to be overwriten with any code that draws to the screen. alpha should be passed in to all <code class="language-python">Character.draw()</code>. Should not be called manually.</p>
+            <pre><code class="language-python">    ...
+    def render(self, alpha): 
+        screen.fill((0, 0, 0))
+
+        player.draw(screen, alpha)
+
+        pygame.display.flip()</code></pre>
+
+            <h3 id="run_game">run_game()</h3>
+            <p>Run the game loop</p>
+            <code class="language-python">run_game() -> None</code>
+            <p>Run within a while loop. Calls <code class="language-python">Timestep.update()</code> and <code class="language-python">Timestep.render()</code> periodically to make the game framerate independent.</p>
+            <pre><code class="language-python">game_running = True
+while game_running:
+    game.run_game()
+pygame.quit()</code></pre>
+        </main>
+    </body>
+</html>
